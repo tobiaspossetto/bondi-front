@@ -14,9 +14,9 @@ const MapView = ({position})=> {
     <MapContainer center={[-31.424528037992335, -62.07158078019124] } zoom={16} minZoom={14} scrollWheelZoom={true}>
 
     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'/>
-   <Markers position={position}/>
-   <Markers position={position}/>
-   <Markers position={position}/>
+   <Markers entity='a' position={position}/>
+   <Markers entity='b' position={position}/>
+ 
    <MyLocation change={position}/>
    
   </MapContainer>
