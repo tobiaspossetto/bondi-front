@@ -29,8 +29,8 @@
      showgrid="true"
      showguides="true"
      inkscape:zoom="30.849356"
-     inkscape:cx="5.4458188"
-     inkscape:cy="5.7699746"
+     inkscape:cx="5.6727278"
+     inkscape:cy="9.821923"
      inkscape:window-width="1366"
      inkscape:window-height="699"
      inkscape:window-x="0"
@@ -53,7 +53,7 @@
     <g
        id="g691">
       <rect
-         style="fill:#ffc837;stroke-width:0.264583;paint-order:fill markers stroke;stop-color:#000000"
+         style="fill:#ff4b4b;stroke-width:0.264583;paint-order:fill markers stroke;stop-color:#000000;fill-opacity:1"
          id="rect682"
          width="12"
          height="13"
@@ -61,7 +61,7 @@
          y="56.356251"
          ry="2.0000002" />
       <rect
-         style="fill:#ffc837;stroke-width:0.264583;paint-order:fill markers stroke;stop-color:#000000"
+         style="fill:#ff4b4b;stroke-width:0.264583;paint-order:fill markers stroke;stop-color:#000000;fill-opacity:1"
          id="rect684"
          width="14"
          height="4"
@@ -69,7 +69,7 @@
          y="62.356251"
          ry="1.0000001" />
       <rect
-         style="fill:#ffc837;stroke-width:0.264583;paint-order:fill markers stroke;stop-color:#000000"
+         style="fill:#ff4b4b;stroke-width:0.264583;paint-order:fill markers stroke;stop-color:#000000;fill-opacity:1"
          id="rect686"
          width="10"
          height="3"
@@ -79,7 +79,7 @@
     </g>
     <path
        id="rect236"
-       style="opacity:1;fill:#000000;stroke-width:0.264582;paint-order:fill markers stroke;stop-color:#000000"
+       style="opacity:1;fill:#ffffff;stroke-width:0.264582;paint-order:fill markers stroke;stop-color:#000000"
        d="m 51.41874,57.35624 c -0.553996,0 -0.999999,0.446003 -0.999999,1.000003 v 4.999998 h -1.000003 v 2.000002 h 1.000003 v 2.000001 c 0,0.553996 0.446003,0.999999 0.999999,0.999999 v 0.999999 h 2.000001 v -0.999999 h 4 v 0.999999 h 2.000001 v -0.999999 c 0.553996,0 0.999999,-0.446003 0.999999,-0.999999 v -2.000001 h 0.999999 v -2.000002 h -0.999999 v -4.999998 c 0,-0.554 -0.446003,-1.000003 -0.999999,-1.000003 z m 0,1.000003 h 8.000002 v 7 H 51.41874 Z m 0,7.999999 h 2.000001 v 1.000002 H 51.41874 Z m 6.000001,0 h 2.000001 v 1.000002 h -2.000001 z" />
   </g>
 </svg>

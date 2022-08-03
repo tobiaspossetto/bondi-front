@@ -1,14 +1,12 @@
 
-import React, { useEffect, useState } from 'react'
-import { Circle, MapContainer, Marker, Polyline, Popup, Rectangle, TileLayer } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
-import Markers, { BondiMarker } from './Markers'
-import MyLocation from './MyLocation'
-import { Pos } from './types'
+import React, { useEffect, useState } from 'react';
+import { Circle, MapContainer, Marker, Polyline, Popup, Rectangle, TileLayer } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import Markers, { bondiHue, BondiMarker } from './Markers';
+import MyLocation from './MyLocation';
+import { Pos } from './types';
+import b from '../lines/b.json';
 
-interface MapViewProps {
-  position: Pos
-}
 
 const C: [number, number][] = [
   [-31.435644783154306, -62.11266700794385],
@@ -59,6 +57,7 @@ const C: [number, number][] = [
   [-31.429964316522177, -62.08233361825357],
   [-31.43129801474818, -62.08265749086522],
   [-31.429757168543134, -62.09201445110188],
+<<<<<<< HEAD
   [-31.42978900152977, -62.09203904431329],
   [-31.431675333532073, -62.09243447660466],
   [-31.432418940574212, -62.0879059037527],
@@ -117,8 +116,65 @@ const B: [number, number][] = [
   [-31.440528688012936, -62.08195202154451], // 9 de Septiembre
   [-31.44121021099998, -62.077631911209096], // 1° Mayo
 ]
+=======
+  [-31.431690643998987, -62.09247567966143],
+  [-31.43243876309111, -62.08788544265468],
+  [-31.43795224764839, -62.089110157410495],
+  [-31.441140308589294, -62.08981165576614],
+  [-31.438339404694858, -62.10690285333699],
+  [-31.436579840730676, -62.10648639747256],
+  [-31.43561954438109, -62.11264048297481]
+];
 
-B.push(B[0])
+const B = b as [number, number][];
+>>>>>>> ec94949 (hacerlo mas agradable a la vista)
+
+// const B: [number, number][] = [
+//   [-31.44587292431336, -62.07864672240045],
+//   [-31.446777428268287, -62.07329749527647],
+//   [-31.445953930564073, -62.073122422843305],
+//   [-31.445538142941405, -62.075753236325674],
+//   [-31.441622400887066, -62.07492992054791],
+//   [-31.442103768647403, -62.072073833261946],
+//   [-31.43802851855267, -62.07121274181651],
+//   [-31.436770130422442, -62.07855783039864],
+//   [-31.43591327149303, -62.078348619882654],
+//   [-31.436243558220713, -62.076209547938674],
+//   [-31.434423013539877, -62.07583339475026],
+//   [-31.43494363000793, -62.07268676091452],
+//   [-31.433013384711153, -62.072233357138224],
+//   [-31.42974981170346, -62.091999475693115], // Bs. As.
+//   [-31.41568092509902, -62.088899632305186], // Rosario de Sta. Fe
+//   // Rotonda Maipu
+//   [-31.415119935445432, -62.092472941454965], // Entrada
+//   [-31.41447060114935, -62.09344717219944],
+//   [-31.41442908464054, -62.09373421443667],
+//   [-31.41459931826385, -62.09406017481644],
+//   [-31.414802765151244, -62.09411368909888], // Salida
+//   [-31.414835982358575, -62.09436667508543], // Rosario de Sta. Fe
+//   [-31.41348243959119, -62.10226274213337], // Honduras
+//   // J. Hernandez
+//   [-31.416305764453583, -62.1028952079542],
+//   [-31.416666979876933, -62.10042373494825], // Curvita
+//   [-31.416720953020146, -62.100165885099244],
+//   [-31.4167956857928, -62.100039392202795],
+//   [-31.416968896515137, -62.09904566802386], // Ecuador
+//   [-31.42224605403873, -62.10019542103638], // Roca
+//   [-31.421040095695357, -62.10747529231243], // Pavón
+//   [-31.422945264985323, -62.107890526381], // Cabrera
+//   [-31.425199423417133, -62.09430716889539], // 25 de Mayo
+//   [-31.42799773574981, -62.09484332628941], // Roldan
+//   [-31.42851773574981, -62.09174332628941], // Bs. As.
+//   // J.B. Justo
+//   [-31.429151465676313, -62.09187003117571],
+//   [-31.429315113048247, -62.091870954122136],
+//   [-31.429902633341193, -62.09203260331729], // 9 de Julio
+//   [-31.43184965777836, -62.079963038030364], // Echeverria
+//   [-31.440528688012936, -62.08195202154451], // 9 de Septiembre
+//   [-31.44121021099998, -62.077631911209096], // 1° Mayo
+// ];
+
+B.push(B[0]);
 
 const A: [number, number][] = [
   [-31.420788135887587, -62.10935408260213],
@@ -177,28 +233,40 @@ const A: [number, number][] = [
 
 ]
 
-const fillBlueOptions = { fillColor: 'blue' }
-const limeOptions = { color: 'red', borderStyle:'dotted', borderWidth: 90}
-const lineA = { color: 'blue', borderStyle:'dotted', borderWidth: 90}
-const lineB = { color: 'green', borderStyle:'dotted', borderWidth: 90}
+const fillBlueOptions = { fillColor: 'blue' };
+const lineStyleA = { color: `hsl(${bondiHue("A")}deg, 100%, 30%)`, borderStyle: 'dotted', borderWidth: 90 };
+const lineStyleB = { color: `hsl(${bondiHue("B")}deg, 100%, 30%)`, borderStyle: 'dotted', borderWidth: 90 };
+const lineStyleC = { color: `hsl(${bondiHue("C")}deg, 100%, 30%)`, borderStyle: 'dotted', borderWidth: 90 };
 
-const MapView = ({ position }: MapViewProps) => {
+const testCC: [number, number] = [-31.42799773574981, -62.09484332628941];
 
+interface MapViewProps {
+  position: Pos;
+  className: string;
+}
+const MapView = ({ position, className }: MapViewProps) => {
   return (
-    <MapContainer center={[-31.424528037992335, -62.07158078019124]} zoom={16} minZoom={14} scrollWheelZoom={true}>
+    <MapContainer className={className} center={[-31.424528037992335, -62.07158078019124]} zoom={16} minZoom={14} scrollWheelZoom={true}>
 
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
-      <BondiMarker line='a' />
-      <BondiMarker line='b' />
-      <Polyline pathOptions={limeOptions} positions={C} />
-      <Polyline pathOptions={lineA} positions={A} />
-      <Polyline pathOptions={lineB} positions={B} />
+      <BondiMarker line='a' position={[-31.41675754067003, -62.08235078378741]} />
+      <BondiMarker line='b' position={[-31.41775754067003, -62.08235078378741]} />
+      <BondiMarker line='c' position={[-31.41875754067003, -62.08235078378741]} />
+      <BondiMarker line='d' position={[-31.41975754067003, -62.08235078378741]} />
+      <BondiMarker line='e' position={[-31.42075754067003, -62.08235078378741]} />
+      <BondiMarker line='f' position={[-31.42175754067003, -62.08235078378741]} />
+      <BondiMarker line='g' position={[-31.42275754067003, -62.08235078378741]} />
+      <BondiMarker line='h' position={[-31.42375754067003, -62.08235078378741]} />
+      <BondiMarker line='i' position={[-31.42475754067003, -62.08235078378741]} />
+      <Polyline pathOptions={lineStyleA} positions={A} />
+      <Polyline pathOptions={lineStyleB} positions={B} />
+      <Polyline pathOptions={lineStyleC} positions={C} />
 
       <MyLocation change={position} />
 
     </MapContainer>
-  )
-}
+  );
+};
 
 
-export default MapView
+export default MapView;
