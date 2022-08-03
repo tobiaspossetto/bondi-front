@@ -17,7 +17,7 @@ interface BondiData {
 
 interface BondiMarkerProps {
   line: string;
-  position: Pos;
+  
 }
 
 
@@ -41,9 +41,9 @@ export function bondiHue(line: string) {
   return Math.floor((360 * 7.5 / (charCodeZ - charCodeA) * (l.charCodeAt(0) - charCodeA)) % 360);
 }
 
-export const BondiMarker = ({ line, position }: BondiMarkerProps) => {
-  // const [position, setPosition] = useState<Pos>([0, 0])
-  const setPosition = () => { };
+export const BondiMarker = ({ line }: BondiMarkerProps) => {
+  const [position, setPosition] = useState<Pos>([0, 0])
+
 
   const [licon, setLicon] = useState<Icon | undefined>(undefined);
 
@@ -81,17 +81,17 @@ export const BondiMarker = ({ line, position }: BondiMarkerProps) => {
     };
   }, [line]);
 
-  // useEffect(() => {
-  //   function onData(data: BondiData) {
-  //     console.log(line)
-  //     console.count('soket')
-  //     setPosition(data.coord)
-  //   }
-  //   socket.on(line, onData)
-  //   return () => {
-  //     socket.off(line, onData)
-  //   }
-  // }, [line])
+  useEffect(() => {
+    function onData(data: BondiData) {
+      console.log(line)
+      console.count('soket')
+      setPosition(data.coord)
+    }
+    socket.on(line, onData)
+    return () => {
+      socket.off(line, onData)
+    }
+  }, [line])
 
   return (
     licon ? <Marker icon={licon} position={position} /> : <Marker position={position} />
