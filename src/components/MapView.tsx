@@ -6,6 +6,9 @@ import Markers, { bondiHue, BondiMarker } from './Markers';
 import MyLocation from './MyLocation';
 import { Pos } from './types';
 import b from '../lines/b.json';
+import {useImmer} from 'use-immer';
+import socket from './socket';
+import {z} from 'zod';
 
 
 const C: [number, number][] = [
@@ -191,14 +194,45 @@ interface MapViewProps {
   position: Pos;
   className: string;
 }
+
+interface BondiData {
+  lineName: string;
+  unitName: string;
+  coord: Pos;
+}
+
+const Bondis = z.record(
+  z.string(), z.record(
+    z.string(), z.tuple([z.number(), z.number()])
+  )
+)
+type Bondis = z.infer<typeof Bondi>
+
 const MapView = ({ position, className }: MapViewProps) => {
+  const [bondis, produceBondis] = useImmer<Bondis>({})
+
+  useEffect(() => {
+    function onData(data: BondiData) {
+      produceBondis(draft => {
+        const line = draft[data.lineName] ?? {}
+        line[data.unitName] = data.coord
+        draft[data.lineName] = line
+      })
+    }
+    socket.on("COORDENADAS", onData)
+    return () => {
+      socket.off("COORDENADAS", onData)
+    }
+  }, [line])
+
+  
   return (
     <MapContainer className={className} center={[-31.424528037992335, -62.07158078019124]} zoom={16} minZoom={14} scrollWheelZoom={true}>
 
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
-      <BondiMarker line='a'  />
-      <BondiMarker line='b'/>
-      <BondiMarker line='c'  />
+      <BondiMarker line='A' />
+      <BondiMarker line='B' />
+      <BondiMarker line='C' />
       {/* <BondiMarker line='d' position={[-31.41975754067003, -62.08235078378741]} />
       <BondiMarker line='e' position={[-31.42075754067003, -62.08235078378741]} />
       <BondiMarker line='f' position={[-31.42175754067003, -62.08235078378741]} />

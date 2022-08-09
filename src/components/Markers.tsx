@@ -3,7 +3,6 @@ import React, { createContext, useEffect, useMemo, useState } from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import { icon, Icon } from 'leaflet';
 import bondiURL from '../icons/bondi.svg';
-import socket from './socket';
 import { Pos } from './types';
 
 export interface MarkerProps {
@@ -11,13 +10,9 @@ export interface MarkerProps {
   pos: Pos;
 }
 
-interface BondiData {
-  coord: Pos;
-}
-
 interface BondiMarkerProps {
   line: string;
-  
+  position: Pos;
 }
 
 
@@ -41,10 +36,7 @@ export function bondiHue(line: string) {
   return Math.floor((360 * 7.5 / (charCodeZ - charCodeA) * (l.charCodeAt(0) - charCodeA)) % 360);
 }
 
-export const BondiMarker = ({ line }: BondiMarkerProps) => {
-  const [position, setPosition] = useState<Pos>([0, 0])
-
-
+export const BondiMarker = ({ line, position }: BondiMarkerProps) => {
   const [licon, setLicon] = useState<Icon | undefined>(undefined);
 
   function updateLicon(line: string) {
@@ -80,18 +72,6 @@ export const BondiMarker = ({ line }: BondiMarkerProps) => {
       bondiImg.removeEventListener('load', () => updateLicon(line));
     };
   }, [line]);
-
-  useEffect(() => {
-    function onData(data: BondiData) {
-      console.log(line)
-      console.count('soket')
-      setPosition(data.coord)
-    }
-    socket.on(line, onData)
-    return () => {
-      socket.off(line, onData)
-    }
-  }, [line])
 
   return (
     licon ? <Marker icon={licon} position={position} /> : <Marker position={position} />
