@@ -1,14 +1,14 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Circle, MapContainer, Marker, Polyline, Popup, Rectangle, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Markers, { bondiHue, BondiMarker } from './Markers';
 import MyLocation from './MyLocation';
 import { Pos } from './types';
 import b from '../lines/b.json';
-import {useImmer} from 'use-immer';
+import { useImmer } from 'use-immer';
 import socket from './socket';
-import {z} from 'zod';
+import { z } from 'zod';
 
 
 const C: [number, number][] = [
@@ -60,21 +60,21 @@ const C: [number, number][] = [
   [-31.429964316522177, -62.08233361825357],
   [-31.43129801474818, -62.08265749086522],
   [-31.429757168543134, -62.09201445110188],
-[-31.42978900152977, -62.09203904431329],
-[-31.431675333532073, -62.09243447660466],
-[-31.432418940574212, -62.0879059037527],
-[-31.437954043759845, -62.08912348656267],
-[-31.43778698490704, -62.09018295912534],
-[-31.440981721301355, -62.09087521082814],
-[-31.44039779712734, -62.094412311543394],
-[-31.44320797214578, -62.09502247124247],
-[-31.44232237760895, -62.100153537089746],
-[-31.43955329504314, -62.09957909984632],
-[-31.43835279990215, -62.10689991937692],
-[-31.43661198381244, -62.10649001253652],
-[-31.43562703041716, -62.11264438506973]
+  [-31.42978900152977, -62.09203904431329],
+  [-31.431675333532073, -62.09243447660466],
+  [-31.432418940574212, -62.0879059037527],
+  [-31.437954043759845, -62.08912348656267],
+  [-31.43778698490704, -62.09018295912534],
+  [-31.440981721301355, -62.09087521082814],
+  [-31.44039779712734, -62.094412311543394],
+  [-31.44320797214578, -62.09502247124247],
+  [-31.44232237760895, -62.100153537089746],
+  [-31.43955329504314, -62.09957909984632],
+  [-31.43835279990215, -62.10689991937692],
+  [-31.43661198381244, -62.10649001253652],
+  [-31.43562703041716, -62.11264438506973]
 
- 
+
 ];
 
 const B = b as [number, number][];
@@ -179,7 +179,7 @@ const A: [number, number][] = [
   [-31.416606467024856, -62.082184486828105],
   [-31.41696842921274, -62.082283560225214],
   [-31.417929799115086, -62.082498136947294],
-  
+
 
 ]
 
@@ -195,21 +195,23 @@ interface MapViewProps {
   className: string;
 }
 
-interface BondiData {
-  lineName: string;
-  unitName: string;
-  coord: Pos;
-}
+const BondiData = z.object({
+  lineName: z.string(),
+  unitName: z.string(),
+  coord: z.tuple([z.number(), z.number()]),
+})
+type BondiData = z.infer<typeof BondiData>
 
-const Bondis = z.record(
-  z.string(), z.record(
-    z.string(), z.tuple([z.number(), z.number()])
-  )
-)
-type Bondis = z.infer<typeof Bondi>
+interface Bondis {
+  [line: string]: {
+    [unit: string]: Pos
+  } | undefined
+}
 
 const MapView = ({ position, className }: MapViewProps) => {
   const [bondis, produceBondis] = useImmer<Bondis>({})
+
+  console.log(bondis)
 
   useEffect(() => {
     function onData(data: BondiData) {
@@ -223,16 +225,20 @@ const MapView = ({ position, className }: MapViewProps) => {
     return () => {
       socket.off("COORDENADAS", onData)
     }
-  }, [line])
+  }, [])
 
-  
+
   return (
     <MapContainer className={className} center={[-31.424528037992335, -62.07158078019124]} zoom={16} minZoom={14} scrollWheelZoom={true}>
 
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
-      <BondiMarker line='A' />
-      <BondiMarker line='B' />
-      <BondiMarker line='C' />
+      {Object.keys(bondis).map(line => (
+        <Fragment key={line}>
+          {Object.keys(bondis[line] ?? {}).map(unit => (
+            <BondiMarker line={line} position={bondis[line]?.[unit] ?? [0,0]} />
+          ))}
+        </Fragment>
+      ))}
       {/* <BondiMarker line='d' position={[-31.41975754067003, -62.08235078378741]} />
       <BondiMarker line='e' position={[-31.42075754067003, -62.08235078378741]} />
       <BondiMarker line='f' position={[-31.42175754067003, -62.08235078378741]} />
